@@ -7,10 +7,10 @@ A small yet production-minded backend that models core Airbnb flows: user & prop
 The **Airbnb API** is a mini backend application that enables users to book properties or workspaces across the platform.  
 
 - **User Section**:  
-  Users can create an account and perform booking operations.  
+  Users can create an account and perform booking operations securely
 
 - **Property Owner Section**:  
-  Property owners can create an account, list/manage their properties, and handle bookings related to their properties.  
+  Property owners can create an account, list/manage their properties, and handle bookings related to their properties securely.
 
 ---
 
@@ -38,7 +38,7 @@ Since this is a demo system (and to avoid cloud costs), you can run everything l
     ```
     docker compose up --build
 
-3. **Interact with the App**
+3. **Interact with the App on swagger with the swagger annotation described for each endpoints**
    ```
     http://localhost:8080/swagger/index.html
 
