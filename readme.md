@@ -105,3 +105,64 @@ To handle **100k+ concurrent users** or **millions of accounts**:
 - **Monoliths are great to start small**: faster to build and test.  
 - **For production-scale Airbnb-like systems**: inevitable move toward microservices, distributed databases, and asynchronous systems.  
 - **Early investment in clean boundaries (repos, handlers, middleware)** in this project makes future refactoring easier.  
+
+
+## System Design Principles
+
+This small monolith works well for 20–50 users, but to handle **millions (up to 100M)** we need to scale horizontally and split into distributed services.  
+
+---
+
+### Scaling to 100M users
+- **Horizontal scaling**: run multiple API instances behind a load balancer.  
+- **Distributes System Service splits**:  
+  - `user-service`  
+  - `property-service`  
+  - `booking-service` (strong ACID)  
+  - `notification-service` (async, event-heavy)  
+  - `payment-service`  
+- **Database partitioning**: shard by region/property to reduce hot spots, replicate for reads across regions.  
+- **CDN + Redis**: serve static content & cache hot queries to reduce DB pressure.  
+
+---
+
+### TPS & Measurement
+- **TPS (Transactions Per Second)** is the throughput the system supports. For example, if 1M users each make 1 request/min → ~16k TPS.  
+- Can be measured using load testing tools like **k6, Locust, wrk** while tracking **latency (p95/p99), error rates, throughput, and resource utilization**.  
+- **TCP (Transmission Control Protocol)** underlies most HTTP traffic. It ensures **reliable, ordered delivery of requests/responses** across the network. For high concurrency, the system must handle millions of concurrent TCP connections, keep them alive efficiently, and avoid bottlenecks in connection management.  
+
+---
+
+### Performance Without Cost Explosion
+To maximize performance without exploding costs, we combine several strategies:
+
+- **Vertical Scaling:** Temporarily boost performance by adding more CPU, RAM, or faster storage to key services. This works for low-to-medium loads but has practical and cost limits.  
+- **Horizontal Scaling:** Add more server instances klike load balancers to handle increased traffic, allowing the system to scale almost indefinitely.  
+- **Database Partitioning & Replication:** Distribute data across regions and maintain read replicas to reduce latency and avoid bottlenecks.  
+- **Caching with CDNs and Redis:** Serve frequently accessed content from caches to minimize database hits and reduce response times.  
+- **WebSockets for Persistent Connections:** Maintain real-time connections efficiently for notifications, bookings, or live updates.  
+- **Optimized DB Queries:** Use proper indexing, batch fetching, and join optimizations to reduce load and response times.   
+
+---
+
+### Performance With Cost Explosion
+If costs are **not optimized**, scaling can become extremely expensive:  
+- Database partitioning + replicas per region → higher infra bills if queries aren’t optimized.  
+- Heavy CDN usage → caching saves DB load but adds cost if cache hit ratios are poor.  
+- Poor code/database practices → force overprovisioning hardware instead of efficient scaling.
+- Increasing server or VM resources → vertical scaling, adding more CPU, RAM, or faster storage to existing instances to handle heavier loads. This is simpler but has practical and cost limits.
+
+
+---
+
+### Infrastructure & Orchestration
+Due to multiple services we use **Kubernetes** to help autoscale the services in various pods
+- **Kubernetes (K8s)**: managed cloud (EKS/GKE/AKS) with autoscaling.  
+- Each service in its own pod, scale independently.  
+- Add observability (Prometheus/Grafana, tracing) for monitoring bottlenecks.  
+
+---
+
+### Summary
+We start with a monolith + MVC, then evolve to **distributed microservices with DB sharding, caching (Redis/CDN), WebSockets, and K8s orchestration** as the project evolves. This allows the system to scale **horizontally across regions**, handle **tens of millions of users**, and balance performance vs cost efficiency.
+
