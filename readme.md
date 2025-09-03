@@ -112,7 +112,7 @@ This small monolith works well for 20–50 users, but to handle **millions (up t
 
 ---
 
-### Scaling to 100M users
+#### Scaling to 100M users
 - **Horizontal scaling**: run multiple API instances behind a load balancer.  
 - **Distributes System Service splits**:  
   - `user-service`  
@@ -124,7 +124,7 @@ This small monolith works well for 20–50 users, but to handle **millions (up t
 - **CDN + Redis**: serve static content & cache hot queries to reduce DB pressure.
 
 ---
-### Code Design
+#### Code Design
 The backend is structured to follow solid **OOP principles** and idiomatic Go practices:  
 - **Single Responsibility & Separation of Concerns:** Each package and layer (handlers, repositories, models, middleware) has a clear purpose.  
 - **Interface-driven design:** Repositories and services are defined with interfaces to allow easy testing and future swapping of implementations.  
@@ -138,14 +138,14 @@ The backend is structured to follow solid **OOP principles** and idiomatic Go pr
 
 ---
 
-### TPS & Measurement
+#### TPS & Measurement
 - **TPS (Transactions Per Second)** is the throughput the system supports. For example, if 1M users each make 1 request/min → ~16k TPS. Making event based executions standout.
 - Can be measured using load testing tools like **k6, Locust, wrk** while tracking **latency (p95/p99), error rates, throughput, and resource utilization**.  
 - **TCP (Transmission Control Protocol)** underlies most HTTP traffic. It ensures **reliable, ordered delivery of requests/responses** across the network. For high concurrency, the system must handle millions of concurrent TCP connections, keep them alive efficiently, and avoid bottlenecks in connection management.  
 
 ---
 
-### Performance Without Cost Explosion
+#### Performance Without Cost Explosion
 To maximize performance without exploding costs, we combine several strategies:
 
 - **Vertical Scaling:** Temporarily boost performance by adding more CPU, RAM, or faster storage to key services. This works for low-to-medium loads but has practical and cost limits.  
@@ -157,7 +157,7 @@ To maximize performance without exploding costs, we combine several strategies:
 
 ---
 
-### Performance With Cost Explosion
+#### Performance With Cost Explosion
 If costs are **not optimized**, scaling can become extremely expensive:  
 - Database partitioning + replicas per region → higher infra bills if queries aren’t optimized.  
 - Heavy CDN usage → caching saves DB load but adds cost if cache hit ratios are poor.  
@@ -167,7 +167,7 @@ If costs are **not optimized**, scaling can become extremely expensive:
 
 ---
 
-### Infrastructure & Orchestration
+#### Infrastructure & Orchestration
 Due to multiple services we use **Kubernetes** to help autoscale the services in various pods
 - **Kubernetes (K8s)**: managed cloud (EKS/GKE/AKS) with autoscaling.  
 - Each service in its own pod, scale independently.  
@@ -175,6 +175,6 @@ Due to multiple services we use **Kubernetes** to help autoscale the services in
 
 ---
 
-### Summary
+#### Summary
 We start with a monolith + MVC, then evolve to **distributed microservices with DB sharding, caching (Redis/CDN), WebSockets, and K8s orchestration** as the project evolves. This allows the system to scale **horizontally across regions**, handle **tens of millions of users**, and balance performance vs cost efficiency.
 
