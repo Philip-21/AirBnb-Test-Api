@@ -1,0 +1,564 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "AirBnb API",
+        "contact": {}
+    },
+    "paths": {
+        "/cancel/booking/{bookingid}": {
+            "delete": {
+                "description": "A Property owner or a user can cancel a booking",
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Confirm Bookings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "bookingid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "booking confirmed"
+                    }
+                }
+            }
+        },
+        "/owner/booking/all": {
+            "get": {
+                "description": "A Property owner gets all  booking",
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Get Bookings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.PropertyBooking"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/owner/booking/{bookingid}": {
+            "get": {
+                "description": "A Property owner gets a particular  bookings data",
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Get Bookings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "bookingid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PropertyBooking"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "A Property owner confirms a booking",
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Confirm Bookings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "bookingid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "booking confirmed"
+                    }
+                }
+            }
+        },
+        "/property/all": {
+            "get": {
+                "description": "A User Owner gets all  properties  available",
+                "tags": [
+                    "Property Owner"
+                ],
+                "summary": "Get all Property",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.GetProperty"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/property/create": {
+            "post": {
+                "description": "A Property Owner creates a property",
+                "tags": [
+                    "Property Owner"
+                ],
+                "summary": "Create Property",
+                "parameters": [
+                    {
+                        "description": "Create Property Request",
+                        "name": "Owner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateProperty"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "property created  successfully"
+                    }
+                }
+            }
+        },
+        "/property/owner": {
+            "get": {
+                "description": "A Property Owner gets all his  properties and its details",
+                "tags": [
+                    "Property Owner"
+                ],
+                "summary": "Get all Property",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.GetProperty"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/property/owner/login": {
+            "post": {
+                "description": "A Property Owner signs-in",
+                "tags": [
+                    "Property Owner"
+                ],
+                "summary": "SignIn Property Owner",
+                "parameters": [
+                    {
+                        "description": "Create Property Owner Request",
+                        "name": "Owner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginPropertyOwner"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "property owner successfully"
+                    }
+                }
+            }
+        },
+        "/property/owner/signup": {
+            "post": {
+                "description": "A Property Owner signups",
+                "tags": [
+                    "Property Owner"
+                ],
+                "summary": "SignUp Property Owner",
+                "parameters": [
+                    {
+                        "description": "Create Property Owner Request",
+                        "name": "Owner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreatePropertyOwner"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "property owner successfully"
+                    }
+                }
+            }
+        },
+        "/property/{propertyid}": {
+            "get": {
+                "description": "A Property Owner gets a property details",
+                "tags": [
+                    "Property Owner"
+                ],
+                "summary": "Get a  Property",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "property created  successfully",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetProperty"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/booking": {
+            "get": {
+                "description": "A User gets his list of bookings",
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Get Bookings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.UserGetBooking"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/booking/{bookingid}": {
+            "get": {
+                "description": "A User gets a booking",
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Get Bookings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "bookingid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserGetBooking"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/booking/{propertyid}": {
+            "post": {
+                "description": "A User Books a property or apartment",
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Book Property",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "propertyid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully booked"
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "A User log's in",
+                "tags": [
+                    "User"
+                ],
+                "summary": "Signin user",
+                "parameters": [
+                    {
+                        "description": "Create User Request",
+                        "name": "CreateUser",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "login successful"
+                    }
+                }
+            }
+        },
+        "/user/signup": {
+            "post": {
+                "description": "A User signups",
+                "tags": [
+                    "User"
+                ],
+                "summary": "SignUp user",
+                "parameters": [
+                    {
+                        "description": "Create User Request",
+                        "name": "CreateUser",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user created successfully"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.CreateProperty": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "property_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreatePropertyOwner": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.GetProperty": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "property_name": {
+                    "type": "string"
+                },
+                "property_owner": {
+                    "$ref": "#/definitions/models.GetPropertyOwner"
+                }
+            }
+        },
+        "models.GetPropertyOwner": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LoginPropertyOwner": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LoginUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PropertyBooking": {
+            "type": "object",
+            "properties": {
+                "booking_id": {
+                    "type": "string"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserGetBooking": {
+            "type": "object",
+            "properties": {
+                "booking_id": {
+                    "type": "string"
+                },
+                "property_id": {
+                    "type": "string"
+                },
+                "property_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

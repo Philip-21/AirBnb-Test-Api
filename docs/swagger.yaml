@@ -1,0 +1,370 @@
+definitions:
+  models.CreateProperty:
+    properties:
+      description:
+        type: string
+      price:
+        type: integer
+      property_name:
+        type: string
+    type: object
+  models.CreatePropertyOwner:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  models.CreateUser:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  models.GetProperty:
+    properties:
+      description:
+        type: string
+      price:
+        type: integer
+      property_id:
+        type: string
+      property_name:
+        type: string
+      property_owner:
+        $ref: '#/definitions/models.GetPropertyOwner'
+    type: object
+  models.GetPropertyOwner:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      owner_id:
+        type: string
+    type: object
+  models.LoginPropertyOwner:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.LoginUser:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.PropertyBooking:
+    properties:
+      booking_id:
+        type: string
+      property_id:
+        type: string
+      status:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.UserGetBooking:
+    properties:
+      booking_id:
+        type: string
+      property_id:
+        type: string
+      property_name:
+        type: string
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: AirBnb API
+paths:
+  /cancel/booking/{bookingid}:
+    delete:
+      description: A Property owner or a user can cancel a booking
+      parameters:
+      - description: ID
+        in: path
+        name: bookingid
+        required: true
+        type: string
+      responses:
+        "200":
+          description: booking confirmed
+      summary: Confirm Bookings
+      tags:
+      - Bookings
+  /owner/booking/{bookingid}:
+    get:
+      description: A Property owner gets a particular  bookings data
+      parameters:
+      - description: ID
+        in: path
+        name: bookingid
+        required: true
+        type: string
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PropertyBooking'
+      summary: Get Bookings
+      tags:
+      - Bookings
+    put:
+      description: A Property owner confirms a booking
+      parameters:
+      - description: ID
+        in: path
+        name: bookingid
+        required: true
+        type: string
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: booking confirmed
+      summary: Confirm Bookings
+      tags:
+      - Bookings
+  /owner/booking/all:
+    get:
+      description: A Property owner gets all  booking
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.PropertyBooking'
+            type: array
+      summary: Get Bookings
+      tags:
+      - Bookings
+  /property/{propertyid}:
+    get:
+      description: A Property Owner gets a property details
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: property created  successfully
+          schema:
+            $ref: '#/definitions/models.GetProperty'
+      summary: Get a  Property
+      tags:
+      - Property Owner
+  /property/all:
+    get:
+      description: A User Owner gets all  properties  available
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.GetProperty'
+            type: array
+      summary: Get all Property
+      tags:
+      - Property Owner
+  /property/create:
+    post:
+      description: A Property Owner creates a property
+      parameters:
+      - description: Create Property Request
+        in: body
+        name: Owner
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProperty'
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: property created  successfully
+      summary: Create Property
+      tags:
+      - Property Owner
+  /property/owner:
+    get:
+      description: A Property Owner gets all his  properties and its details
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.GetProperty'
+            type: array
+      summary: Get all Property
+      tags:
+      - Property Owner
+  /property/owner/login:
+    post:
+      description: A Property Owner signs-in
+      parameters:
+      - description: Create Property Owner Request
+        in: body
+        name: Owner
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginPropertyOwner'
+      responses:
+        "200":
+          description: property owner successfully
+      summary: SignIn Property Owner
+      tags:
+      - Property Owner
+  /property/owner/signup:
+    post:
+      description: A Property Owner signups
+      parameters:
+      - description: Create Property Owner Request
+        in: body
+        name: Owner
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreatePropertyOwner'
+      responses:
+        "200":
+          description: property owner successfully
+      summary: SignUp Property Owner
+      tags:
+      - Property Owner
+  /user/booking:
+    get:
+      description: A User gets his list of bookings
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserGetBooking'
+            type: array
+      summary: Get Bookings
+      tags:
+      - Bookings
+  /user/booking/{bookingid}:
+    get:
+      description: A User gets a booking
+      parameters:
+      - description: ID
+        in: path
+        name: bookingid
+        required: true
+        type: string
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserGetBooking'
+      summary: Get Bookings
+      tags:
+      - Bookings
+  /user/booking/{propertyid}:
+    post:
+      description: A User Books a property or apartment
+      parameters:
+      - description: ID
+        in: path
+        name: propertyid
+        required: true
+        type: string
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: successfully booked
+      summary: Book Property
+      tags:
+      - Bookings
+  /user/login:
+    post:
+      description: A User log's in
+      parameters:
+      - description: Create User Request
+        in: body
+        name: CreateUser
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginUser'
+      responses:
+        "200":
+          description: login successful
+      summary: Signin user
+      tags:
+      - User
+  /user/signup:
+    post:
+      description: A User signups
+      parameters:
+      - description: Create User Request
+        in: body
+        name: CreateUser
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      responses:
+        "200":
+          description: user created successfully
+      summary: SignUp user
+      tags:
+      - User
+swagger: "2.0"

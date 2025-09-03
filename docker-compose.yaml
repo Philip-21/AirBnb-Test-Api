@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+    airbnb-svc:
+        build:
+            context: .
+            dockerfile: ./dockerfile
+        restart: always
+        ports:
+            - "8080:8080"
+        env_file:
+            - ./.env
+        networks:
+            - network
+
+networks:
+    network:
+        driver: bridge
