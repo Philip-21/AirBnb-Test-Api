@@ -139,7 +139,7 @@ The backend is structured to follow solid **OOP principles** and idiomatic Go pr
 ---
 
 ### TPS & Measurement
-- **TPS (Transactions Per Second)** is the throughput the system supports. For example, if 1M users each make 1 request/min → ~16k TPS.  
+- **TPS (Transactions Per Second)** is the throughput the system supports. For example, if 1M users each make 1 request/min → ~16k TPS. Making event based executions standout.
 - Can be measured using load testing tools like **k6, Locust, wrk** while tracking **latency (p95/p99), error rates, throughput, and resource utilization**.  
 - **TCP (Transmission Control Protocol)** underlies most HTTP traffic. It ensures **reliable, ordered delivery of requests/responses** across the network. For high concurrency, the system must handle millions of concurrent TCP connections, keep them alive efficiently, and avoid bottlenecks in connection management.  
 
