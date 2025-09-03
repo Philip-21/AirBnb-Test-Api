@@ -125,7 +125,7 @@ This small monolith works well for 20–50 users, but to handle **millions (up t
 
 ---
 #### Code Design
-The backend is structured to follow solid **OOP principles** and idiomatic Go practices:  
+The backend should be enhanced more to follow solid **OOP principles** and idiomatic Go practices:  
 - **Single Responsibility & Separation of Concerns:** Each package and layer (handlers, repositories, models, middleware) has a clear purpose.  
 - **Interface-driven design:** Repositories and services are defined with interfaces to allow easy testing and future swapping of implementations.  
 - **Concurrency & Goroutines:** Heavy operations, such as booking confirmations, notifications, or sending emails, leverage goroutines for non-blocking execution.  
