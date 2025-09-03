@@ -67,20 +67,20 @@ The application is packaged as a **Dockerized monolith** that connects to a Post
 
 ## Challenges, Issues & Insights (Scaling Beyond Thousands of Users)
 
-### 1. Monolith Limitations
+#### 1. Monolith Limitations
 - A single codebase is simple for development, but as traffic grows, deploy cycles, bug isolation, and scaling specific modules (e.g., bookings vs. auth) become difficult.
 - Horizontal scaling requires replicating the entire app, even if only one part is under heavy load.
 
-### 2. Database Bottlenecks
+#### 2. Database Bottlenecks
 - PostgreSQL on a single instance will eventually hit **I/O and query throughput limits**.  
 - Heavy joins (e.g., user + property + booking lookups) increase latency as data grows.  
 - Write-heavy operations like bookings can cause row locking and contention.
 
-### 3. Authentication & Security
+#### 3. Authentication & Security
 - JWT is stateless and fast, but token revocation is tricky without extra infrastructure (e.g., Redis for blacklisting).  
 - At scale, stronger monitoring and rotation of secret keys would be required.
 
-### 4. Scaling to Millions of Users
+#### 4. Scaling to Millions of Users
 To handle **100k+ concurrent users** or **millions of accounts**:  
 - **Database Scaling**: Introduce **read replicas**, sharding, and caching (e.g., Redis).  
 - **Service Decomposition**: Split monolith into microservices — Auth, Property, Booking — each independently scalable.  
@@ -94,14 +94,13 @@ To handle **100k+ concurrent users** or **millions of accounts**:
 - Cache frequently accessed data (property lists, booking statuses).  
 - Offload heavy analytics to a separate data pipeline.  
 
-### 6. Measuring TPS (Transactions Per Second)
+#### 6. Measuring TPS (Transactions Per Second)
 - Use tools like **k6**, **Locust**, or **JMeter** for load and stress testing.  
-- Baseline TPS depends on infrastructure (single instance vs. multi-node).  
 - With proper horizontal scaling + DB optimization, system could reach **thousands of TPS**.  
 
 ---
 
-## Insights
+#### Insights
 - **Monoliths are great to start small**: faster to build and test.  
 - **For production-scale Airbnb-like systems**: inevitable move toward microservices, distributed databases, and asynchronous systems.  
 - **Early investment in clean boundaries (repos, handlers, middleware)** in this project makes future refactoring easier.  
@@ -122,7 +121,20 @@ This small monolith works well for 20–50 users, but to handle **millions (up t
   - `notification-service` (async, event-heavy)  
   - `payment-service`  
 - **Database partitioning**: shard by region/property to reduce hot spots, replicate for reads across regions.  
-- **CDN + Redis**: serve static content & cache hot queries to reduce DB pressure.  
+- **CDN + Redis**: serve static content & cache hot queries to reduce DB pressure.
+
+---
+### Code Design
+The backend is structured to follow solid **OOP principles** and idiomatic Go practices:  
+- **Single Responsibility & Separation of Concerns:** Each package and layer (handlers, repositories, models, middleware) has a clear purpose.  
+- **Interface-driven design:** Repositories and services are defined with interfaces to allow easy testing and future swapping of implementations.  
+- **Concurrency & Goroutines:** Heavy operations, such as booking confirmations, notifications, or sending emails, leverage goroutines for non-blocking execution.  
+- **Error Handling:** Explicit error propagation ensures predictable flows and easier debugging.  
+- **DRY & Reusable Functions:** Repeated logic is encapsulated into utilities or helper functions.  
+- **Proper Database Access Patterns:** GORM is used efficiently with batching, indexing, and joins where necessary to reduce DB load.  
+- **JWT Authentication & Middleware:** Encapsulated authentication logic ensures secure access control without mixing concerns.  
+- **Testability:** Components are designed to be unit-testable with dependency injection, making it easier to maintain and extend the system.
+
 
 ---
 
