@@ -2,6 +2,8 @@
 
 A small yet production-minded backend that models core Airbnb flows: user & property-owner authentication, property management, and bookings. Includes a clear path to scale from a single instance to tens of millions of users.
 
+The project can be accesed [here](https://airbnb-test-api.onrender.com/swagger/index.html)
+
 ## Overview
 
 The **Airbnb API** is a mini backend application that enables users to book properties or workspaces across the platform.  
@@ -24,9 +26,11 @@ The **Airbnb API** is a mini backend application that enables users to book prop
 
 ---
 
+
+
 ## Project Setup
 
-Since this is a demo system (and to avoid cloud costs), you can run everything locally using **Docker Compose**.  
+You can run everything locally using **Docker Compose**.  
 
 ### Steps
 1. **Clone the repository**
